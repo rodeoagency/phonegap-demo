@@ -1,0 +1,124 @@
+/* CSS Document */
+
+.page {
+background: url(../img/bg.jpg) top left no-repeat !important;
+background-size:100% auto;
+}
+.sml {
+	font-size:50%;
+	}
+	
+.logo {
+padding:10px 0;
+}
+.logo img {width:100%;height:auto;}
+li {
+    backgound:none !important;
+
+}
+
+input.error {
+
+-moz-box-shadow: 0 0 12px #c00;
+-webkit-box-shadow: 0 0 12px #c00;
+box-shadow: 0 0 12px #c00;
+}
+
+label.error {margin-top:10px;color:#c00;dislpay:block;}
+
+p {font-size:16px;}
+
+/* Play */
+
+#complete {height:8px;background:#fff;width:100%;}
+#complete div {height:8px;background:#000;width:10%;float:left;}
+#stopwatch {
+    font-size:3em;
+    padding:10px 0;
+    text-align:center;
+    color: #A3D900;
+}
+.penalty {
+    color:#c00 !important;
+    }
+.penalty-color {background:#c00 !important; }
+    
+#penalty-notice {
+    font-size:3em;
+    color:#c00;
+    text-align:center;
+    display:none;
+    opacity:0.6;
+}
+
+#game {
+    
+    background-size:contain;
+    position:relative;
+}
+
+#game #content {padding:0;}
+
+#disc { 
+    background:red;
+    height:100px;
+    width:100px;
+    -moz-border-radius:64px;
+    -webkit-border-radius:64px;
+    background: url(../img/object.png) top left no-repeat;
+    background-size:contain;
+    position:absolute;
+    z-index:2;
+}
+
+#gameArea { display: none;}
+
+#geostatus {border:1px solid #444;}
+
+#target_zone {
+    background:#eeee00;
+    height:180px;
+    width:180px;
+    -moz-border-radius:180px;
+    -webkit-border-radius:180px;
+    margin: 70px auto 0 auto;
+    z-index:1;
+    opacity:0.5;
+    moz-opacity:0.3;
+    border:1px solid #777;
+   }
+   
+#box {
+    position:relative;
+    width:100%;
+    height:360px;
+    float:left;
+    }
+
+#btns { 
+    position:absolute;
+    bottom:40px;
+    width:100%;
+    }
+
+.fl {float:left;}
+.fr {float:right;}
+
+#btns div.ui-btn { margin:0 5px 0 0;}
+
+#footer {
+    position:absolute;
+    bottom:0;
+	}
+
+button.logout {float:right;}
+
+
+#save {display:none;}
+
+a.btn-home { 
+    background: url(../img/icon-home.png) center center no-repeat;
+    background-size:80%;
+    height:25px;width:25px;
+    float:left;
+}

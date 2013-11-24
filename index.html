@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
+<link href="css/app.css" rel="stylesheet" type="text/css" />
+<title>Puck Off!</title>
+</head>
+<body>
+<div id="deviceready">
+  <div data-role="page" class="page" id="homescreen">
+    <div data-role="header" class="logo">
+        <img src="img/logo.gif" />
+    </div>
+    <div data-role="content">
+        
+      <ul data-role="listview">
+        <li data-theme="e"><a href="#game" data-transition="fade" id="access_game" data-icon="star" >Play!</a></li>
+        <li><a href="#register" data-transition="fade">Register</a></li>
+        <li><a href="#signin" data-transition="fade">Sign in</a></li>
+        <li><a id="leaderboardBtn" href="#leaderboard" data-transition="fade">Leaderboard</a></li>
+        <li><a href="#maplist" data-transition="fade">Records</a></li>
+        
+      </ul>
+        
+        <p><br />The object of the game is to travel minimum distance of XXX in the quickest time possible whilst keeping the hockey puck in the centre of the target zone (in yellow).</p>
+        <p>If the puck goes outside the target zone, the timer will run at 3x speed until puck returns to target zone.</p>
+        <p>Good luck - now go Puck Off!</p>
+            
+    </div>
+    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+    
+    <div class="ui-grid-a">
+	<div class="ui-block-a"><button id="queryBtn" value="" >Query SB</button></div>
+	<div class="ui-block-b"><button id="queryBtn2" value="" >Query User</button></div>
+    </div><!-- /grid-a -->
+    
+    
+  </div>
+    
+    
+    
+    
+  <!-- Sign in page -->
+  
+  <div data-role="page" class="page" id="signin">
+    <div data-role="header" class="logo">
+      <img src="img/logo.gif" />
+      <h1>Sign in</h1>
+    </div>
+    <div data-role="content">
+        <form method="post">
+            <div data-role="fieldcontain" class="">
+              <label for="username">Username:</label>
+              <input type="text" name="username" id="username" value="" />
+            </div>
+            <div data-role="fieldcontain">
+              <label for="password">Password:</label>
+              <input type="password" name="password" id="password" value="" />
+            </div>
+            <input data-role="submit" type="submit" value="Sign in" />
+        </form>
+    </div>
+    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <!-- Registration page -->
+  
+  <div data-role="page" class="page"  id="register">
+    <div data-role="header" class="logo">
+      <img src="img/logo.gif" />
+      <h1>Register</h1>
+    </div>
+    <div data-role="content">
+        <form method="post">
+            <div data-role="fieldcontain" class="">
+              <label for="username">Username *:</label>
+              <input type="text" name="username" id="username" value=""/>
+            </div>
+
+            <div data-role="fieldcontain">
+              <label for="password">Password*:</label>
+              <input type="password" name="password" id="password" value="" />
+            </div>
+
+            <input data-role="submit" type="submit" value="Register" />
+      
+      </form>
+        
+      <span class="sml">(*required fields)</span> </div>
+    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- Leaderboard -->
+  
+  <div data-role="page" class="page"  id="leaderboard">
+    <div data-role="header" class="logo">
+      <img src="img/logo.gif" />
+      <h1>Leaderboard</h1>
+    </div>
+    <div data-role="content"> </div>
+    <div data-role="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a> </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  <!-- maplist -->
+  
+  <div data-role="page" class="page"  id="maplist">
+    <div data-role="header" class="logo">
+      <img src="img/logo.gif" />
+      <h1>Map</h1>
+    </div>
+    <div data-role="content"><p id="tracks_recorded"></p>
+      <ul data-role="listview" id="history_tracklist">
+      </ul></div>
+    <div data-role="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a> </div>
+  </div>
+  
+ 
+  <div data-role="page" class="page" id="track_info">
+    <div data-role="header" class="logo">
+      <img src="img/logo.gif" />
+      <h1>Viewing Single</h1>
+      
+    </div>
+    <div data-role="content">
+      <p id="track_info_info"></p>
+      <div id="map_canvas" style="position:absolute;bottom:0;left:0;width:300px;height:300px;border:1px"></div>
+    </div>
+    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  <!-- Game -->
+  
+  <div data-role="page"  class="page" id="game">
+    <div data-role="header">
+      <div id="stopwatch">00:00:00</div>
+      <div id="complete"><div></div></div>
+    </div>
+    <div data-role="content" id="content">
+    
+        <div id="introArea">
+            <h1>Choose course distance...</h1>
+            <a href="#" data-value="20" data-role="button" data-inline="true" class="distance">20 metres</a>
+            <a href="#" data-value="50" data-role="button" data-inline="true" class="distance">50 metres</a>
+            <a href="#" data-value="100" data-role="button" data-inline="true" class="distance">100 metres</a>
+            
+        </div>  
+      <div id="gameArea">
+        <div id="box">
+        <div id="disc"></div>
+        <div id="target_zone"></div>
+        <div id="val"></div>
+        
+      </div>
+        
+      <div id="btns">
+        
+        <input type='button' value='Play/Pause' id="play" />
+          
+        <div class="ui-grid-a">
+            <div class="ui-block-a">       
+                <input type='button' value='Save' id="save" data-theme="e" />
+            </div>
+            <div class="ui-block-b">         
+                <input type='button' value='Reset' id="reset" data-theme="d" />
+            </div>       
+        </div>    
+        <div id="loggedin_username"></div>
+         <p id="geostatus"></p>
+      </div>
+     </div>    
+          
+    </div>
+          
+    <div data-role="footer" id="footer"><a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+  </div>
+  
+  
+  
+  <div data-role="page" class="page" id="dialogue">
+    <div data-role="header" class="logo">
+      <img src="img/logo.gif" />
+      <h1>Error</h1>
+    </div>
+    <div data-role="content">
+        
+        <div class="ui-grid-a">
+            <div class="ui-block-a">       
+                <a href="#homescreen" data-transition="fade" data-role="button" data-inline="true">Home</a>
+            </div>
+            <div class="ui-block-b">         
+                <a href="#signin" data-transition="fade" data-role="button" data-inline="true">Sign In</a>
+            </div>       
+        </div>  
+    </div>
+    <div data-role="footer" id="footer"> </div>
+  </div>
+  
+</div>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.6.4.min.js" ></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC6VlQczvogqAKjL38jej7uOcssqWPQTBM&sensor=false"></script> 
+<script type="text/javascript" charset="utf-8" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.timer.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/accelerometer.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/game.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/geolocator.js"></script>
+</body>
+</html>
