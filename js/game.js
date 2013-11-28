@@ -2,17 +2,18 @@
 //
 document.addEventListener("deviceready", onDeviceReady, false);
 
+
+var db = window.openDatabase("Database", "1.0", "Puckoff", 200000);
 var loggedin = false;
 var user_id;
 var user_name;
-var db = window.openDatabase("Database", "1.0", "Puckoff", 200000);
-var course_distance = 0;
+var course_distance;
 var geowatchID = null;    // ID of the geolocation
 var tracking_data = []; // Array containing GPS position objects
-var distance_travelled = 0;
+var distance_travelled;
 var lat;var lng;
-var tmp_distance = 0;
-var complete = 0;
+var tmp_distance;
+var complete;
 var time_taken;
 
 // create database
@@ -94,7 +95,8 @@ function accessGame(tx,results) {
             user_name = results.rows.item(i).username;
             console.log(user_name);
         }
-       
+        complete = 0;
+        tracking_data = [];
         $.mobile.changePage( "#game", { transition: "fade"} );
     }
     else
@@ -408,11 +410,9 @@ function resetGame() {
         geowatchID = null;
     }
     tracking_data = [];
-    lat = null;
-    long = null;
     complete = 0;
-    distance_travelled = 0;
-    tmp_distance = 0;
+    distance_travelled = parseFloat(0);
+    tmp_distance = parseFloat(0);
     $("#complete div").css('width','0');
     
 }
