@@ -1,0 +1,4 @@
+phonegap-demo
+=============
+
+Sample app
