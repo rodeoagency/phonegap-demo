@@ -4,7 +4,7 @@
     <description>
         A simple game exploring accelerometer, geolocation and local storage.
     </description>
-    <author email="dev@callback.apache.org" href="http://cordova.io">
+    <author email="sam.graham@rodeoagency.com.au" href="http://rodeoagency.com.au">
         Apache Cordova Team
     </author>
     <access origin="*" />
@@ -14,8 +14,4 @@
     <preference name="target-device" value="handset" />
     <preference name="Orientation" value="portrait" />
     <content src="index.html" />
-    
-    <icon src="icons/ios/icon.png" gap:platform="ios" width="57" height="57" />
-    <icon src="icons/ios/icon-72.png" gap:platform="ios" width="72" height="72" />
-    <icon src="icons/ios/icon_at_2x.png" gap:platform="ios" width="114" height="114" />
 </widget>
