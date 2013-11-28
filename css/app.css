@@ -1,13 +1,18 @@
 /* CSS Document */
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .page {
 background: url(../img/bg.jpg) top left no-repeat !important;
 background-size:100% auto;
 }
-.sml {
-	font-size:50%;
-	}
-	
+
+h1.ui-title {font-size:24px !important;}        
+        
 .logo {
 padding:10px 0;
 }
@@ -30,8 +35,9 @@ p {font-size:16px;}
 
 /* Play */
 
-#complete {height:8px;background:#fff;width:100%;}
-#complete div {height:8px;background:#000;width:10%;float:left;}
+#complete {border-left:5px solid #339900;border-right:5px solid #c00;height:12px;background:#fff url(../img/finish-line.gif) center right no-repeat !important;
+background-size:12px auto;width:inherit;}
+#complete div {height:12px;background:#eeee00;width:0%;float:left;}
 #stopwatch {
     font-size:3em;
     padding:10px 0;
@@ -71,9 +77,10 @@ p {font-size:16px;}
     z-index:2;
 }
 
+#introArea {padding:40px 0;}
 #gameArea { display: none;}
 
-#geostatus {border:1px solid #444;}
+#geostatus {position:absolute;top:40px;font-size:10px;}
 
 #target_zone {
     background:#eeee00;
@@ -84,41 +91,49 @@ p {font-size:16px;}
     margin: 70px auto 0 auto;
     z-index:1;
     opacity:0.5;
-    moz-opacity:0.3;
-    border:1px solid #777;
+    moz-opacity:0.2;
    }
    
 #box {
     position:relative;
     width:100%;
-    height:360px;
-    float:left;
-    }
+    height:340px;
+    border:1px solid #c00;    
+ }
 
-#btns { 
-    position:absolute;
-    bottom:40px;
-    width:100%;
-    }
+ #btns {padding:5px 0;}
 
 .fl {float:left;}
 .fr {float:right;}
 
-#btns div.ui-btn { margin:0 5px 0 0;}
 
-#footer {
-    position:absolute;
-    bottom:0;
-	}
-
-button.logout {float:right;}
-
-
-#save {display:none;}
+table {width:100%;font-size: 16px;}
+th {font-weight:bold;background-color: #ffffff;}
+td {width:30%;padding:8px;text-align:center;background-color: #ffffff;}
 
 a.btn-home { 
     background: url(../img/icon-home.png) center center no-repeat;
-    background-size:80%;
-    height:25px;width:25px;
-    float:left;
+    background-size:100% auto;
+    height:30px;width:30px;
+    margin:0 auto;
+}
+
+#footer {text-align:center;}
+
+[data-role=page] {
+  min-height: 100%;
+  position: relative;
+}
+
+[data-role=content] {
+  padding-bottom: 30px; /* based on how tall your footer is and how much gap you want */
+  min-height:260px;
+}
+
+[data-role=footer] {
+  position: absolute;
+  text-align:center;
+  bottom: 0;
+  width: 100%;
+  height: 30px /* this can be configurable, or omitted, as long as the above padding-bottom is at least as much as the height of the footer is */
 }

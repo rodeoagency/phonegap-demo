@@ -6,7 +6,14 @@ var loggedin = false;
 var user_id;
 var user_name;
 var db = window.openDatabase("Database", "1.0", "Puckoff", 200000);
-var course_distance = null;
+var course_distance = 0;
+var geowatchID = null;    // ID of the geolocation
+var tracking_data = []; // Array containing GPS position objects
+var distance_travelled = 0;
+var lat;var lng;
+var tmp_distance = 0;
+var complete = 0;
+var time_taken;
 
 // create database
 function createDatabaseSchema(tx) {
@@ -14,14 +21,9 @@ function createDatabaseSchema(tx) {
     tx.executeSql('CREATE TABLE IF NOT EXISTS USERS (userid INTEGER PRIMARY KEY AUTOINCREMENT, username unique, pass)');
     
     tx.executeSql('DROP TABLE IF EXISTS SCOREBOARD');
-    tx.executeSql("CREATE TABLE IF NOT EXISTS SCOREBOARD (userid INTEGER, timer, date_added DATE)");
+    tx.executeSql("CREATE TABLE IF NOT EXISTS SCOREBOARD (username, timer, date_added DATE,distance INTEGER)");
    
-    //tx.executeSql('INSERT INTO SCOREBOARD (userid,timer,date_added) VALUES (?,?,?)',[user_id,'3:08',today_ts],querySuccess,errorCB);
-  
 }
-
-var today_ts = new Date();
-today_ts = today_ts.format("yyyy-MM-dd");
 
 
 // Populate the database
@@ -37,7 +39,12 @@ function registerUser(tx) {
                                                                           
 }
 
-function registerUserCB(){
+function registerUserCB(tx,results){
+    console.log(results)
+    if (results.insertId != null) {
+        user_id = results.insertId;
+    }
+    
     console.log('user logged in with id: '+user_id);
     loggedin = true;
     user_name = $('#register form input[name=username]').val();
@@ -47,22 +54,24 @@ function registerUserCB(){
 
 // Populate the database
 function addScore(tx) {
-    return;
-                                          
-                                                                          
+    
+    var today_ts = new Date();
+    today_ts = today_ts.format("yyyy-MM-dd");
+    var time_taken = $("#stopwatch").html();
+    var date_recorded = today_ts;
+    
+    tx.executeSql('INSERT INTO SCOREBOARD (username,timer,date_added,distance) VALUES (?,?,?,?)',[user_name,time_taken,today_ts,course_distance]);                                                                      
 }
 
 // Query the database
 //
 function queryDB(tx) {
-    var sql = 'SELECT * FROM SCOREBOARD';
-    alert('query db'+sql);
-    tx.executeSql(sql,[],querySuccess,errorCB);
+    var sql = 'SELECT * FROM SCOREBOARD ORDER BY timer LIMIT 10';
+    tx.executeSql(sql,[],querySuccessScoreboard,errorCB);
 }
 
 function queryDB2(tx) {
     var sql = 'SELECT * FROM USERS';
-    alert('query db'+sql);
     tx.executeSql(sql,[],querySuccessUser,errorCB);
 }
 
@@ -71,8 +80,6 @@ function signIn(tx) {
     var username = $("#signin input[name=username]").val();
     var password = $("#signin input[name=password]").val();
     var sql = 'SELECT * FROM USERS WHERE `username` = ? AND `pass` = ?';
-    
-    alert(sql);
     tx.executeSql(sql, [username,password], accessGame,errorCB );    // WHERE username = \''+username+'\' AND `password` = \''+password+'\'
 }
 
@@ -125,23 +132,28 @@ function querySuccess(tx, results) {
     }
 }
 
-function querySuccessUser(tx, results) {
+function querySuccessScoreboard(tx, results) {
     console.log(results);console.log("Returned rows = " + results.rows.length);
     // this will be true since it was a select statement and so rowsAffected was 0
     if (!results.rowsAffected) {
         //alert('No rows affected!');
         
     }
+    
+    $("#leaderboard_list").html('');
+    
     if (results.rows.length) {
+        
+        $("#leaderboard_list").append('<table>');
+        $("#leaderboard_list").append('<tr><th>Username</th><th>Distance</th><th>Time taken</th></tr>')   
         
         var len = results.rows.length;
         for (var i=0; i<len; i++){
-            
-            alert("Row = " + i + " ID = " + results.rows.item(i).userid +
-                  " username =  " + results.rows.item(i).username +
-                  " pass =  " + results.rows.item(i).pass
-                  );
+            $("#leaderboard_list").append('<tr><td>'+ results.rows.item(i).username +'</td><td>'+ results.rows.item(i).distance +'</td><td>'+ results.rows.item(i).timer +'</td></tr>');          
+                      
         }
+         $("#leaderboard_list").append('</table>');
+        
     }
     // for an insert statement, this property will return the ID of the last inserted row
     if (results.insertId != null) {
@@ -171,7 +183,6 @@ function successCB() {
 function onDeviceReady() {
     db.transaction(createDatabaseSchema, errorCB, successCB);
     initForms();
-    addScore();
     checkConnection();
 }
 
@@ -217,25 +228,31 @@ function initForms() {
     
 }
 
+
+$('#leaderboard').live('pageshow', function () {
+    db.transaction(queryDB, errorCB, querySuccessScoreboard);
+});
+
 $('#game').live('pageshow', function () {
-                
-        if (!loggedin) {
-            //alert('Please sign in');
-            $("#dialogue p").html('Please sign in to access the game');
-            $.mobile.changePage( "#dialogue", { transition: "pop"} );
-            $("#loggedin_username").html('');
-        }
-        else {
-            console.log('UID'+user_id);
-            console.log('username'+user_name);
-            //$("#loggedin_username").html('Hi '+user_name);
-        }
+        
+    resetGame();
+    
+    if (!loggedin) {
+        //alert('Please sign in');
+        $("#dialogue p").html('Please sign in or register to play');
+        $.mobile.changePage( "#dialogue", { transition: "pop"} );
+        $("#loggedin_username").html('');
+    }
+    else {
+        console.log('UID'+user_id);
+        console.log('username'+user_name);
+        $("#loggedin_username").html('Hi '+user_name);
+    }
+    
 });
 
 
 $(function(){
-  var d = $("#disc");
-  d.offset({ top: 110, left: 110 });
   
   $("#play").click(function() {
     $(this).toggleClass('active');
@@ -249,7 +266,7 @@ $(function(){
   
   
   $(".distance").click(function() {
-//        /alert($(this).attr('data-value'));
+        resetGame();
         course_distance = $(this).attr('data-value');
         $("#gameArea").show();
         $("#introArea").hide();
@@ -264,7 +281,7 @@ $(function(){
   }
   
  $('#register').bind('pageinit', function(event) {
-    console.log('reg init'); 
+    
     $('#register form').validate({
                     rules: {
                             username: {
@@ -285,7 +302,7 @@ $(function(){
    });
   
   $('#signin').bind('pageinit', function(event) {
-    console.log('reg init');
+    
     $('#signin form').validate({
                     rules: {
                             username: {
@@ -308,6 +325,16 @@ $(function(){
   
 });
 
+$(document).live( 'pagebeforechange', function() {
+  // hide footer
+  $('[data-role=footer]').hide();
+});
+
+$(document).live( 'pagechange', function() {
+  // show footer
+  $('[data-role=footer]').show();
+});
+
 
 var myTimer = new (function() {
                     var $stopwatch, // Stopwatch element on the page
@@ -325,6 +352,7 @@ var myTimer = new (function() {
                     this.resetStopwatch = function() {
                         currentTime = 0;
                         this.Timer.stop().once();
+                        currentTime = 0;
                     };
                     this.addPenalty = function() {
                         incrementTime = 400;
@@ -358,3 +386,33 @@ function formatTime(time) {
     return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
 }
 
+
+function resetGame() {
+    
+    $('#play').removeClass('active');
+    var d = $("#disc");
+    d.css("top", "110px");
+    d.css("left", "110px");
+    
+    $('#stopwatch').removeClass('penalty');
+    $("#target_zone").removeClass('penalty-color');
+    
+    $("#gameArea").hide();
+    $("#introArea").show();
+    
+    clearTimer();
+    
+    // Reset watch_id and tracking_data
+    if (geowatchID != null) {
+        navigator.geolocation.clearWatch(geowatchID);
+        geowatchID = null;
+    }
+    tracking_data = [];
+    lat = null;
+    long = null;
+    complete = 0;
+    distance_travelled = 0;
+    tmp_distance = 0;
+    $("#complete div").css('width','0');
+    
+}

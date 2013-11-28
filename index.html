@@ -11,6 +11,7 @@
 </head>
 <body>
 <div id="deviceready">
+    
   <div data-role="page" class="page" id="homescreen">
     <div data-role="header" class="logo">
         <img src="img/logo.gif" />
@@ -22,21 +23,17 @@
         <li><a href="#register" data-transition="fade">Register</a></li>
         <li><a href="#signin" data-transition="fade">Sign in</a></li>
         <li><a id="leaderboardBtn" href="#leaderboard" data-transition="fade">Leaderboard</a></li>
-        <li><a href="#maplist" data-transition="fade">Records</a></li>
+        <!--<li><a href="#savescreen" data-transition="fade">Save</a></li>-->
         
       </ul>
         
-        <p><br />The object of the game is to travel minimum distance of XXX in the quickest time possible whilst keeping the hockey puck in the centre of the target zone (in yellow).</p>
+        <p><br />The object of the game is to travel the course distance (20,50 or 100 metres) in the quickest time possible whilst keeping the hockey puck in the centre of the target zone (in yellow).</p>
         <p>If the puck goes outside the target zone, the timer will run at 3x speed until puck returns to target zone.</p>
-        <p>Good luck - now go Puck Off!</p>
+        <p>Good luck - now go on - Puck Off!</p>
             
     </div>
-    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+    <div data-role="footer" id="footer"></div>
     
-    <div class="ui-grid-a">
-	<div class="ui-block-a"><button id="queryBtn" value="" >Query SB</button></div>
-	<div class="ui-block-b"><button id="queryBtn2" value="" >Query User</button></div>
-    </div><!-- /grid-a -->
     
     
   </div>
@@ -54,17 +51,20 @@
     <div data-role="content">
         <form method="post">
             <div data-role="fieldcontain" class="">
-              <label for="username">Username:</label>
+              <label for="username">Username *</label>
               <input type="text" name="username" id="username" value="" />
             </div>
             <div data-role="fieldcontain">
-              <label for="password">Password:</label>
+              <label for="password">Password *</label>
               <input type="password" name="password" id="password" value="" />
             </div>
             <input data-role="submit" type="submit" value="Sign in" />
         </form>
+        <p class="sml">(* required fields)</p> 
     </div>
-    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+    <div data-role="footer" id="footer">
+        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
+    </div>
   </div>
   
   
@@ -82,21 +82,23 @@
     <div data-role="content">
         <form method="post">
             <div data-role="fieldcontain" class="">
-              <label for="username">Username *:</label>
+              <label for="username">Username *</label>
               <input type="text" name="username" id="username" value=""/>
             </div>
 
             <div data-role="fieldcontain">
-              <label for="password">Password*:</label>
+              <label for="password">Password *</label>
               <input type="password" name="password" id="password" value="" />
             </div>
 
             <input data-role="submit" type="submit" value="Register" />
       
       </form>
-        
-      <span class="sml">(*required fields)</span> </div>
-    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+      <p class="sml">(* required fields)</p> 
+    </div>
+    <div data-role="footer" id="footer">
+        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
+    </div>
   </div>
   
   
@@ -113,48 +115,16 @@
       <img src="img/logo.gif" />
       <h1>Leaderboard</h1>
     </div>
-    <div data-role="content"> </div>
-    <div data-role="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a> </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  <!-- maplist -->
-  
-  <div data-role="page" class="page"  id="maplist">
-    <div data-role="header" class="logo">
-      <img src="img/logo.gif" />
-      <h1>Map</h1>
+    <div data-role="content">
+        <div id="leaderboard_list"></div>
     </div>
-    <div data-role="content"><p id="tracks_recorded"></p>
-      <ul data-role="listview" id="history_tracklist">
-      </ul></div>
-    <div data-role="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a> </div>
+    <div data-role="footer">
+        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
+    </div>
   </div>
+  
   
  
-  <div data-role="page" class="page" id="track_info">
-    <div data-role="header" class="logo">
-      <img src="img/logo.gif" />
-      <h1>Viewing Single</h1>
-      
-    </div>
-    <div data-role="content">
-      <p id="track_info_info"></p>
-      <div id="map_canvas" style="position:absolute;bottom:0;left:0;width:300px;height:300px;border:1px"></div>
-    </div>
-    <div data-role="footer" id="footer"> <a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
-  </div>
-  
-  
-  
-  
-  
-  
   
   <!-- Game -->
   
@@ -164,11 +134,12 @@
       <div id="complete"><div></div></div>
     </div>
     <div data-role="content" id="content">
-    
+        <p id="geostatus"></p>
         <div id="introArea">
+            
             <h1>Choose course distance...</h1>
-            <a href="#" data-value="20" data-role="button" data-inline="true" class="distance">20 metres</a>
-            <a href="#" data-value="50" data-role="button" data-inline="true" class="distance">50 metres</a>
+            <a href="#" data-value="30" data-role="button" data-inline="true" class="distance">30 metres</a><br />
+            <a href="#" data-value="60" data-role="button" data-inline="true" class="distance">60 metres</a><br />
             <a href="#" data-value="100" data-role="button" data-inline="true" class="distance">100 metres</a>
             
         </div>  
@@ -183,25 +154,36 @@
       <div id="btns">
         
         <input type='button' value='Play/Pause' id="play" />
-          
-        <div class="ui-grid-a">
-            <div class="ui-block-a">       
-                <input type='button' value='Save' id="save" data-theme="e" />
-            </div>
-            <div class="ui-block-b">         
-                <input type='button' value='Reset' id="reset" data-theme="d" />
-            </div>       
-        </div>    
-        <div id="loggedin_username"></div>
-         <p id="geostatus"></p>
+        <input type='button' value='Reset' id="reset" data-theme="d" />  
+         
       </div>
      </div>    
           
     </div>
           
-    <div data-role="footer" id="footer"><a class="btn-home" href="#homescreen" data-transition="fade"></a><input type='button' value='Logout' class="logout" /></div>
+    <div data-role="footer" id="footer">
+        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
+    </div>
   </div>
   
+  <!-- Complete -->
+  
+  <div data-role="page" class="page" id="savescreen">
+    <div data-role="header" class="logo">
+      <img src="img/logo.gif" />
+      <h1>Complete!</h1>
+    </div>
+    <div data-role="content">
+        <input type='button' value='Save' id="save" data-theme="e" />
+        <a href="#game" data-transition="fade" data-role="button" data-inline="true">Play again</a>
+    </div>
+    <div data-role="footer" id="footer">
+        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
+    </div>
+  </div>
+  
+  
+  <!-- Dialogue -->
   
   
   <div data-role="page" class="page" id="dialogue">
@@ -210,17 +192,19 @@
       <h1>Error</h1>
     </div>
     <div data-role="content">
-        
+        <p></p>
         <div class="ui-grid-a">
             <div class="ui-block-a">       
-                <a href="#homescreen" data-transition="fade" data-role="button" data-inline="true">Home</a>
+                <a href="#register" data-transition="fade" data-role="button" data-inline="true">Register</a>
             </div>
             <div class="ui-block-b">         
                 <a href="#signin" data-transition="fade" data-role="button" data-inline="true">Sign In</a>
             </div>       
         </div>  
     </div>
-    <div data-role="footer" id="footer"> </div>
+    <div data-role="footer" id="footer">
+        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
+    </div>
   </div>
   
 </div>
