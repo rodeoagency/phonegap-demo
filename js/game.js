@@ -104,7 +104,8 @@ function accessGame(tx,results) {
     if (results.rows.length) {
         
         loggedin = true;
-        $('.logout').show();
+        $('#logout').show();
+        $('#signin form input').val('');
         
         for (var i=0; i<results.rows.length; i++){
             user_id = results.rows.item(i).userid;
