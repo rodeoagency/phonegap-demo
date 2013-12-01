@@ -6,9 +6,9 @@ html, body {
   height: 100%;
 }
 
+.sml {font-size:60%;padding-left:10px;}
 .page {
-background: url(../img/bg.jpg) top left no-repeat !important;
-background-size:100% auto;
+background: #000;
 }
 
 h1.ui-title {font-size:24px !important;}        
@@ -78,9 +78,10 @@ background-size:12px auto;width:auto;}
 }
 
 #introArea {}
+#loggedin_username {padding:15px 0;}
 #gameArea { display: none;}
 
-#geostatus {position:absolute;top:40px;font-size:10px;}
+#geostatus {position:absolute;width:90%;bottom:120px;right:0;font-size:10px;background:#fff;opacity:0.5;padding:5px;display:none;}
 
 #target_zone {
     background:#eeee00;
@@ -98,7 +99,8 @@ background-size:12px auto;width:auto;}
     position:relative;
     width:100%;
     height:320px; 
-    border-top: 1px solid #fff;
+    border: 1px solid #666666;
+    background: url(../img/bg.jpg) top left no-repeat !important;background-size:100% auto;
  }
 
  #btns {padding:5px 0;}
@@ -109,11 +111,11 @@ background-size:12px auto;width:auto;}
 
 table {width:100%;font-size: 16px;}
 th {font-weight:bold;background-color: #ffffff;}
-td {width:30%;padding:8px;text-align:center;background-color: #ffffff;}
+td {width:30%;padding:8px;text-align:center;}
 
 a.btn-home { 
     background: url(../img/icon-home.png) center center no-repeat;
-    background-size:100% auto;
+    background-size:80% auto;
     height:30px;width:30px;
     margin:0 auto;
 }
@@ -126,13 +128,19 @@ a.btn-home {
 }
 
 [data-role=content] {
-  padding-bottom: 30px; /* based on how tall your footer is and how much gap you want */
-  min-height:260px;
+  /*padding-bottom: 40px;*/ /* based on how tall your footer is and how much gap you want */
+  /*min-height:260px;*/
+  background: #F0FCFF;
+  
 }
 
 [data-role=footer] {
   position: absolute;
   text-align:center;
   bottom: 0;
-  width: 100%; /* this can be configurable, or omitted, as long as the above padding-bottom is at least as much as the height of the footer is */
+  width: 100%; 
+  padding:5px 0;
+  height:30px;/* this can be configurable, or omitted, as long as the above padding-bottom is at least as much as the height of the footer is */
 }
+
+#logout,#reset_wrapper {display:none;}

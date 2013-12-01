@@ -3,7 +3,7 @@ $("#play").live('click', function(){
         if(course_distance == 0) {
             $("#gameArea").hide();
             $("#introArea").show();
-            
+            resetGame();
         }
             
         myTimer.Timer.toggle();
@@ -16,36 +16,36 @@ $("#play").live('click', function(){
 
                if ($("#play").hasClass('active')) {
                         
-                    tracking_data.push(position);
+                    if (position.coords.accuracy <= 10) {
 
-                    if (tracking_data.length > 1)  {        
-                        
-                        tmp_distance = (getDistanceFromLatLonInKm(lat,lng, position.coords.latitude, position.coords.longitude)*1000);
-                        console.log('tmp'+tmp_distance);
-                     }
-                     
-                    // store values for reference when next polled
-                    lat = position.coords.latitude;
-                    lng = position.coords.longitude;
+                        if ((tracking_data.length > 1) && lat != null && lng != null)  {        
 
-                    //geo.html('Lat: '+ position.coords.latitude + '<br> ' + 'Long: ' + position.coords.longitude  + '<br>Tmp distance : '+ tmp_distance + '<br>Total Distance : '+ distance_travelled + '% Complete: ' + complete + 'Timestamp: ' + new Date(position.timestamp).format("h:m:s") );
+                            tmp_distance = (getDistanceFromLatLonInKm(lat,lng, position.coords.latitude, position.coords.longitude)*1000);
+                            console.log('tmp'+tmp_distance);
+                         }
 
-                    console.log('Lat: '+ position.coords.latitude + '\n' + 'Long: ' + position.coords.longitude  + '\nTmp distance : '+ tmp_distance + '\nTotal Distance : '+ distance_travelled + '% Complete: ' + complete + 'Timestamp: ' + new Date(position.timestamp).format("h:m:s") );
+                        // store values for reference when next polled
+                        lat = position.coords.latitude;
+                        lng = position.coords.longitude;
 
-                    distance_travelled += tmp_distance;
-                    complete = Math.ceil((distance_travelled/course_distance)*100);
-                    
-                    console.log('travelled: '+distance_travelled);
-                    console.log('% complete: '+complete);
-                    console.log('course:'+course_distance);
-                    
-                    if(complete < 100 && tracking_data.length > 1) {
-                        $("#complete div").css('width',complete+'%');
-                    }
-                    else if(complete >= 100 && tracking_data.length > 1) {
-                        //alert(complete);
-                        $("#play").removeClass('active');
-                        myTimer.Timer.stop().once();
+                        geo.html('Lat: '+ position.coords.latitude + '| ' + 'Long: ' + position.coords.longitude  + '<br>Tmp  : '+ tmp_distance + ' | Total  : '+ distance_travelled + '<br>% : ' + complete + '<br>Time: ' + new Date(position.timestamp).format("h:m:s") + ' | Accuracy (m): ' + position.coords.accuracy);
+
+                        console.log('Lat: '+ position.coords.latitude + '\n' + 'Long: ' + position.coords.longitude  + '\nTmp distance : '+ tmp_distance + '\nTotal Distance : '+ distance_travelled + '\n% Complete: ' + complete + 'Timestamp: ' + new Date(position.timestamp).format("h:m:s")+'\nAcc: ' + position.coords.accuracy );
+
+                        distance_travelled += tmp_distance;
+                        complete = Math.floor((distance_travelled/course_distance)*100);
+
+                        console.log('travelled: '+distance_travelled);
+                        console.log('% complete: '+complete);
+                        console.log('course:'+course_distance);
+
+                        if(complete < 100 && tracking_data.length > 1) {
+                            $("#complete div").css('width',complete+'%');
+                        }
+                        else if(complete >= 100 && tracking_data.length > 1) {
+                            //alert(complete);
+                            $("#play").removeClass('active');
+                            myTimer.Timer.stop().once();
                         $("#gameArea").hide();
                         $("#introArea").show();
                         //geo.html('finished');
@@ -54,8 +54,10 @@ $("#play").live('click', function(){
                         console.log('finished:'+complete);
                         complete = 0;
                         $.mobile.changePage( "#savescreen", { transition: "pop"} );
+                        
                     }
-                    
+                    tracking_data.push(position);
+                    }
                 }
                 else {
                     //geo.html('Paused');
@@ -120,19 +122,3 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
 function deg2rad(deg) {
     return deg * (Math.PI/180)
 }
-
-/*
-
-// Set the initial Lat and Long of the Google Map
-var myLatLng = new google.maps.LatLng(data[0].coords.latitude, data[0].coords.longitude);
-// Google Map options
-var myOptions = {
-zoom: 15,
-center: myLatLng,
-mapTypeId: google.maps.MapTypeId.ROADMAP
-};
-// Create the Google Map, set options
-var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-//Google Map API key AIzaSyC6VlQczvogqAKjL38jej7uOcssqWPQTBM
-*/

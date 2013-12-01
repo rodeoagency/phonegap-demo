@@ -21,10 +21,10 @@
         
       <ul data-role="listview">
         <li data-theme="e"><a href="#game" data-transition="fade" id="access_game" data-icon="star" >Play!</a></li>
-        <li><a href="#register" data-transition="fade">Register</a></li>
-        <li><a href="#signin" data-transition="fade">Sign in</a></li>
+        <li id="registerBtn"><a href="#register" data-transition="fade">Register</a></li>
+        <li id="signinBtn"><a href="#signin" data-transition="fade">Sign in</a></li>
         <li><a id="leaderboardBtn" href="#leaderboard" data-transition="fade">Leaderboard</a></li>
-        <!--<li><a href="#savescreen" data-transition="fade">Save</a></li>-->
+        <li id="logout"><a href="#" data-transition="fade">Logout</a></li>
         
       </ul>
         
@@ -33,7 +33,7 @@
         <p><strong>Good luck - now go Puck Off!</strong></p>
             
     </div>
-    <div data-role="footer" id="footer"></div>
+    <div data-role="footer" id="footer"><p id="reset_wrapper"><input type='button' value='Reset app (dev only)' id="reset_all" /></p></div>
     
     
     
@@ -52,16 +52,16 @@
     <div data-role="content">
         <form method="post">
             <div data-role="fieldcontain" class="">
-              <label for="username">Username *</label>
+              <label for="username">Username</label>
               <input type="text" name="username" id="username" value="" />
             </div>
             <div data-role="fieldcontain">
-              <label for="password">Password *</label>
+              <label for="password">Password</label>
               <input type="password" name="password" id="password" value="" />
             </div>
             <input data-role="submit" type="submit" value="Sign in" />
         </form>
-        <p class="sml">(* required fields)</p> 
+        
     </div>
     <div data-role="footer" id="footer">
         <a class="btn-home" href="#homescreen" data-transition="fade"></a>
@@ -83,19 +83,19 @@
     <div data-role="content">
         <form method="post">
             <div data-role="fieldcontain" class="">
-              <label for="username">Username *</label>
+              <label for="username">Username</label>
               <input type="text" name="username" id="username" value=""/>
             </div>
 
             <div data-role="fieldcontain">
-              <label for="password">Password *</label>
+              <label for="password">Password</label>
               <input type="password" name="password" id="password" value="" />
             </div>
 
             <input data-role="submit" type="submit" value="Register" />
       
       </form>
-      <p class="sml">(* required fields)</p> 
+      
     </div>
     <div data-role="footer" id="footer">
         <a class="btn-home" href="#homescreen" data-transition="fade"></a>
@@ -137,11 +137,19 @@
     <div data-role="content" id="content">
         <p id="geostatus"></p>
         <div id="introArea">
-            
+            <h1 id="loggedin_username"></h1>
             <h1>Choose course distance...</h1>
-            <a href="#" data-value="15" data-role="button" data-inline="true" class="distance">15 metres</a><br />
-            <a href="#" data-value="40" data-role="button" data-inline="true" class="distance">40 metres</a><br />
-            <a href="#" data-value="80" data-role="button" data-inline="true" class="distance">80 metres</a>
+           <div class="ui-grid-a">
+            <div class="ui-block-a">       
+                 <a href="#" data-value="10" data-role="button" data-inline="true" class="distance">10 metres</a><br /><a href="#" data-value="40" data-role="button" data-inline="true" class="distance">40 metres</a><br />
+            </div>
+            <div class="ui-block-b">         
+                <a href="#" data-value="25" data-role="button" data-inline="true" class="distance">25 metres</a><br />
+            
+                <a href="#" data-value="80" data-role="button" data-inline="true" class="distance">80 metres</a>
+            </div>       
+        </div>  
+            
             
         </div>  
       <div id="gameArea">

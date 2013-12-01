@@ -18,14 +18,24 @@ var time_taken;
 
 // create database
 function createDatabaseSchema(tx) {
+    //tx.executeSql('DROP TABLE IF EXISTS USERS');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS USERS (userid INTEGER PRIMARY KEY AUTOINCREMENT, username unique, pass)');
+    
+    //tx.executeSql('DROP TABLE IF EXISTS SCOREBOARD');
+    tx.executeSql("CREATE TABLE IF NOT EXISTS SCOREBOARD (username, timer, date_added DATE,distance INTEGER)");
+   
+}
+
+
+function resetAll(tx) {
     tx.executeSql('DROP TABLE IF EXISTS USERS');
     tx.executeSql('CREATE TABLE IF NOT EXISTS USERS (userid INTEGER PRIMARY KEY AUTOINCREMENT, username unique, pass)');
     
     tx.executeSql('DROP TABLE IF EXISTS SCOREBOARD');
     tx.executeSql("CREATE TABLE IF NOT EXISTS SCOREBOARD (username, timer, date_added DATE,distance INTEGER)");
    
+    
 }
-
 
 // Populate the database
 function registerUser(tx) {
@@ -35,9 +45,13 @@ function registerUser(tx) {
     var username = $("#register input[name=username]").val();
 	//var email = $("#register input[name=email]").val();
     var password = $("#register input[name=password]").val();
-    tx.executeSql("INSERT INTO USERS (username,pass) values(?,?)",[username,password],registerUserCB,errorCB);
+    tx.executeSql("INSERT INTO USERS (username,pass) values(?,?)",[username,password],registerUserCB,registerUserErrorCB);
                                           
                                                                           
+}
+
+function registerUserErrorCB(tx,results) {
+    alert('Username already exists - please try again');
 }
 
 function registerUserCB(tx,results){
@@ -50,6 +64,7 @@ function registerUserCB(tx,results){
     loggedin = true;
     user_name = $('#register form input[name=username]').val();
     $('#register form input').val('');
+    resetGame();
     $.mobile.changePage( "#game", { transition: "fade"} );
 }
 
@@ -60,14 +75,15 @@ function addScore(tx) {
     today_ts = today_ts.format("yyyy-MM-dd");
     var time_taken = $("#stopwatch").html();
     var date_recorded = today_ts;
-    
-    tx.executeSql('INSERT INTO SCOREBOARD (username,timer,date_added,distance) VALUES (?,?,?,?)',[user_name,time_taken,today_ts,course_distance]);                                                                      
+    console.log(user_name+'|'+time_taken+'|'+today_ts+'|'+course_distance);
+    tx.executeSql('INSERT INTO SCOREBOARD (username,timer,date_added,distance) VALUES (?,?,?,?)',[user_name,time_taken,today_ts,course_distance]);      
+    resetGame();
 }
 
 // Query the database
 //
 function queryDB(tx) {
-    var sql = 'SELECT * FROM SCOREBOARD ORDER BY timer LIMIT 10';
+    var sql = 'SELECT * FROM SCOREBOARD ORDER BY timer LIMIT 20';
     tx.executeSql(sql,[],querySuccessScoreboard,errorCB);
 }
 
@@ -135,34 +151,34 @@ function querySuccess(tx, results) {
 }
 
 function querySuccessScoreboard(tx, results) {
-    console.log(results);console.log("Returned rows = " + results.rows.length);
+    
+    console.log("Returned rows = " + results.rows.length);
     // this will be true since it was a select statement and so rowsAffected was 0
-    if (!results.rowsAffected) {
-        //alert('No rows affected!');
-        
-    }
     
     $("#leaderboard_list").html('');
     
     if (results.rows.length) {
         
         $("#leaderboard_list").append('<table>');
-        $("#leaderboard_list").append('<tr><th>Username</th><th>Distance</th><th>Time taken</th></tr>')   
+        $("#leaderboard_list").append('<tr><th>Rank</th><th>Name</th><th>Distance</th><th>Time</th></tr>')   
         
         var len = results.rows.length;
-        for (var i=0; i<len; i++){
-            $("#leaderboard_list").append('<tr><td>'+ results.rows.item(i).username +'</td><td>'+ results.rows.item(i).distance +'</td><td>'+ results.rows.item(i).timer +'</td></tr>');          
+        for (var i=0; i<=len; i++){
+            $("#leaderboard_list").append('<tr><td>'+(i+1)+'</td><td>'+ results.rows.item(i).username +'</td><td>'+ results.rows.item(i).distance +'</td><td>'+ results.rows.item(i).timer +'</td></tr>');          
                       
         }
          $("#leaderboard_list").append('</table>');
         
     }
+    else
+        $("#leaderboard_list").append('<p>No scores recorded yet</p>');
     // for an insert statement, this property will return the ID of the last inserted row
     if (results.insertId != null) {
         console.log('username is '+results.rowsAffected.rows.item(0).username);
         user_id = results.insertId;
         
     }
+    return;
 }
 
 
@@ -171,6 +187,7 @@ function querySuccessScoreboard(tx, results) {
 function errorCB(err) {
     console.log(err);
     console.log("Error processing SQL: "+err.message);
+    return false;
 }
 
 // Transaction success callback
@@ -178,13 +195,13 @@ function errorCB(err) {
 function successCB() {
     console.log('SQL OK');
     //db.transaction(queryDB, errorCB);
+    return true;
 }
 
 // device APIs are available
 //
 function onDeviceReady() {
     db.transaction(createDatabaseSchema, errorCB, successCB);
-    initForms();
     checkConnection();
 }
 
@@ -208,29 +225,6 @@ function checkConnection() {
             }
         }
 
-
-
-function initForms() {
-    
-    
-    //query
-    $("#queryBtn").click(function(e){
-                         
-          db.transaction(queryDB, errorCB, querySuccess);
-          e.preventDefault();
-          return false;
-     });
-    
-    $("#queryBtn2").click(function(e){
-                         
-          db.transaction(queryDB2, errorCB, querySuccessUser);
-          e.preventDefault();
-          return false;
-     });
-    
-}
-
-
 $('#leaderboard').live('pageshow', function () {
     db.transaction(queryDB, errorCB, querySuccessScoreboard);
 });
@@ -248,7 +242,11 @@ $('#game').live('pageshow', function () {
     else {
         console.log('UID'+user_id);
         console.log('username'+user_name);
-        $("#loggedin_username").html('Hi '+user_name);
+        if(user_name == 'dev')
+            $("#geostatus").show();
+        else
+            $("#geostatus").hide();
+        $("#loggedin_username").html('Good luck '+user_name);
     }
     
 });
@@ -256,14 +254,19 @@ $('#game').live('pageshow', function () {
 
 $(function(){
   
+  
+  $("#reset_all").click(function() {
+      db.transaction(resetAll, errorCB, successCB);
+  });
+  
   $("#play").click(function() {
     $(this).toggleClass('active');
     });
   
-  $(".logout").click(function() {
+  $("#logout").click(function() {
         loggedin = false;
-        alert('Logged out!');
-        $.mobile.changePage( "#homescreen", { transition: "fade"} );
+        $("#logout").hide();
+        $("#registerBtn, #signinBtn").show();
     });
   
   
@@ -272,15 +275,26 @@ $(function(){
         course_distance = $(this).attr('data-value');
         $("#gameArea").show();
         $("#introArea").hide();
-        console.log(course_distance);
+        console.log('distance: '+course_distance);
     });
   
-  
-  
+  $('#homescreen').live('pageshow', function() {
   if(loggedin == false) {
-      console.log('hide logout');
-    $('.logout').closest('.ui-btn').hide();
-  }
+        console.log('not logged in');
+        $("#logout").hide();
+        $("#reset_wrapper").hide();
+        $("#registerBtn, #signinBtn").show();
+    }
+    else {
+        console.log('logged in');
+        $("#logout").show();
+        $("#registerBtn, #signinBtn").hide();
+        if(user_name == 'dev')
+            $("#reset_wrapper").show();
+        else    
+            $("#reset_wrapper").hide();
+    }
+  });
   
  $('#register').bind('pageinit', function(event) {
     
@@ -296,7 +310,7 @@ $(function(){
                             }
                     },
                     submitHandler: function() { 
-                            db.transaction(registerUser, errorCB, registerUserCB);
+                            db.transaction(registerUser, registerUserErrorCB, registerUserCB);
                             event.preventDefault();
                             return false; 
                 }
@@ -332,7 +346,9 @@ $(document).live( 'pagebeforechange', function() {
   $('[data-role=footer]').hide();
 });
 
-$(document).live( 'pagechange', function() {
+$(document).live( 'pageshow', function() {
+    
+    
   // show footer
   $('[data-role=footer]').show();
 });
@@ -375,19 +391,6 @@ function clearTimer() {
     myTimer.resetStopwatch();
 }
 
-// Common functions
-function pad(number, length) {
-    var str = '' + number;
-    while (str.length < length) {str = '0' + str;}
-    return str;
-}
-function formatTime(time) {
-    var min = parseInt(time / 6000),
-    sec = parseInt(time / 100) - (min * 60),
-    hundredths = pad(time - (sec * 100) - (min * 6000), 2);
-    return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
-}
-
 
 function resetGame() {
     
@@ -413,6 +416,8 @@ function resetGame() {
     complete = 0;
     distance_travelled = parseFloat(0);
     tmp_distance = parseFloat(0);
+    lat = null;
+    lng = null;
     $("#complete div").css('width','0');
     
 }
