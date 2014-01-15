@@ -33,11 +33,7 @@
         <p><strong>Good luck - now go Puck Off!</strong></p>
             
     </div>
-    <p id="reset_wrapper"><input type='button' value='Reset app (dev only)' id="reset_all" /></p>
-    
-    
-    
-  </div>
+    </div>
     
     
     
@@ -48,8 +44,9 @@
     <div data-role="header" class="logo">
       <img src="img/logo.gif" />
       <h1>Sign in</h1>
-    </div>
+      </div>
     <div data-role="content">
+        <a class="sml-button" data-inline="true" data-role="button" href="#homescreen" data-transition="fade" data-theme="b">Back</a>
         <form method="post">
             <div data-role="fieldcontain" class="">
               <label for="username">Username</label>
@@ -63,12 +60,7 @@
         </form>
         
     </div>
-    <div data-role="footer" id="footer">
-        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
-    </div>
   </div>
-  
-  
   
   
   
@@ -81,6 +73,7 @@
       <h1>Register</h1>
     </div>
     <div data-role="content">
+        <a class="sml-button" data-inline="true" data-role="button" href="#homescreen" data-transition="fade" data-theme="b">Back</a>
         <form method="post">
             <div data-role="fieldcontain" class="">
               <label for="username">Username</label>
@@ -97,16 +90,7 @@
       </form>
       
     </div>
-    <div data-role="footer" id="footer">
-        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
-    </div>
   </div>
-  
-  
-  
-  
-  
-  
   
   
   <!-- Leaderboard -->
@@ -117,26 +101,23 @@
       <h1>Leaderboard</h1>
     </div>
     <div data-role="content">
+        <p><a class="sml-button" data-inline="true" data-role="button" href="#homescreen" data-transition="fade" data-theme="b">Back</a></p>
         <div id="leaderboard_list"></div>
     </div>
-    <div data-role="footer">
-        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
-    </div>
-  </div>
+   </div>
   
-  
- 
-  
+    
   <!-- Game -->
   
   <div data-role="page"  class="page" id="game">
     <div data-role="header">
       <div id="stopwatch">00:00:00</div>
       <div id="complete"><div></div></div>
+      <div id="accuracy">GPS</div>
     </div>
     <div data-role="content" id="content">
-        <p id="geostatus"></p>
         <div id="introArea">
+            <p><a class="sml-button" data-inline="true" data-role="button" href="#homescreen" data-transition="fade" data-theme="b">Back</a></p>
             <h1 id="loggedin_username"></h1>
             <h1>Choose course distance...</h1>
            <div class="ui-grid-a">
@@ -151,7 +132,8 @@
         </div>  
             
             
-        </div>  
+        </div>
+        
       <div id="gameArea">
         <div id="box">
         <div id="disc"></div>
@@ -164,14 +146,11 @@
         
         <input type='button' value='Play/Pause' id="play" />
         <input type='button' value='Reset' id="reset" data-theme="d" />  
+         <a class="sml-button" data-inline="true" data-role="button" href="#homescreen" data-transition="fade" data-theme="b">Back</a><span id="accuracy"></span>
          
       </div>
      </div>    
           
-    </div>
-          
-    <div data-role="footer" id="footer">
-        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
     </div>
   </div>
   
@@ -183,11 +162,9 @@
       <h1>Complete!</h1>
     </div>
     <div data-role="content">
+        <a class="sml-button" data-inline="true" data-role="button" href="#homescreen" data-transition="fade" data-theme="b">Back</a>
         <input type='button' value='Save' id="save" data-theme="e" />
         <a href="#game" data-transition="fade" data-role="button" data-inline="true">Play again</a>
-    </div>
-    <div data-role="footer" id="footer">
-        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
     </div>
   </div>
   
@@ -201,6 +178,7 @@
       <h1>Error</h1>
     </div>
     <div data-role="content">
+        <a class="sml-button" data-inline="true" data-role="button" href="#homescreen" data-transition="fade" data-theme="b">Back</a>
         <p></p>
         <div class="ui-grid-a">
             <div class="ui-block-a">       
@@ -211,10 +189,7 @@
             </div>       
         </div>  
     </div>
-    <div data-role="footer" id="footer">
-        <a class="btn-home" href="#homescreen" data-transition="fade"></a>
-    </div>
-  </div>
+   </div>
   
 </div>
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>

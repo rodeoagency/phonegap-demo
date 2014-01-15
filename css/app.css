@@ -5,7 +5,7 @@ html, body {
   padding: 0;
   height: 100%;
 }
-
+.sml-button {font-size:.8em;}
 .sml {font-size:60%;padding-left:10px;}
 .page {
 background: #000;
@@ -35,9 +35,9 @@ p {font-size:16px;}
 
 /* Play */
 
-#complete {border-left:10px solid #339900;height:12px;background:#fff url(../img/finish-line.gif) center right no-repeat !important;
-background-size:12px auto;width:auto;}
-#complete div {height:12px;background:#eeee00;width:0%;float:left;}
+#complete {border-left:10px solid #339900;height:12px;background:#fff url(../img/finish-line.gif) center right no-repeat !important;background-size:12px auto;width:88%;float:left;}
+#complete div {height:12px;background:#eeee00;width:0%;float:left;max-width: 95%;}
+#accuracy {width:8%;float:left;font-size:10px;color:#fff;text-align:center;background:#c00;}
 #stopwatch {
     font-size:3em;
     padding:10px 0;
