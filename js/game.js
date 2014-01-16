@@ -63,7 +63,9 @@ function registerUserCB(tx,results){
     
     console.log('user logged in with id: '+user_id);
     window.localStorage.setItem("loggedin", "Y");
+    
     user_name = $('#register form input[name=username]').val();
+    window.localStorage.setItem("loggedin_username",user_name);
     $('#register form input').val('');
     resetGame();
     $.mobile.changePage( "#game", { transition: "fade"} );
