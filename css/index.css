@@ -76,12 +76,12 @@ h1 {
 }
 
 .event.listening {
-    background-color:#333333;
+    background-color:#F0FCFF;
     display:block;
 }
 
 .event.received {
-    background-color:#4B946A;
+    background-color:#F0FCFF;
     display:none;
 }
 

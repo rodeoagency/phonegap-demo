@@ -4,15 +4,14 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  background: #F0FCFF;
 }
 .sml-button {font-size:.8em;}
 .sml {font-size:60%;padding-left:10px;}
-.page {
-background: #000;
-}
 
 h1.ui-title {font-size:24px !important;}        
-        
+    
+
 .logo {
 padding:10px 0;
 }
@@ -37,7 +36,7 @@ p {font-size:16px;}
 
 #complete {border-left:10px solid #339900;height:12px;background:#fff url(../img/finish-line.gif) center right no-repeat !important;background-size:12px auto;width:88%;float:left;}
 #complete div {height:12px;background:#eeee00;width:0%;float:left;max-width: 95%;}
-#accuracy {width:8%;float:left;font-size:10px;color:#fff;text-align:center;background:#c00;}
+#accuracy {width:8%;float:left;font-size:10px;color:#fff;text-align:center;background:#c00;text-shadow:none;}
 #stopwatch {
     font-size:3em;
     padding:10px 0;
@@ -110,7 +109,7 @@ p {font-size:16px;}
 
 table {width:100%;font-size: 16px;}
 th {font-weight:bold;background-color: #ffffff;}
-td {width:30%;padding:8px;text-align:center;}
+td {width:25%;padding:8px;text-align:center;}
 
 a.btn-home { 
     background: url(../img/icon-home.png) center center no-repeat;
@@ -129,7 +128,7 @@ a.btn-home {
 
 [data-role=content] {
   /*padding-bottom: 40px;*/ /* based on how tall your footer is and how much gap you want */
-  min-height:300px;
+  min-height:400px;
   background: #F0FCFF;
   
 }

@@ -16,8 +16,11 @@ $("#play").live('click', function(){
 
                if ($("#play").hasClass('active')) {
                         
+                    
                     if (position.coords.accuracy <= 10) {
-
+                            
+                        $("#accuracy").css({'background':'#0c0'});    
+                        
                         if ((tracking_data.length > 1) && lat != null && lng != null)  {        
 
                             tmp_distance = (getDistanceFromLatLonInKm(lat,lng, position.coords.latitude, position.coords.longitude)*1000);
@@ -58,6 +61,9 @@ $("#play").live('click', function(){
                     }
                     tracking_data.push(position);
                     }
+                    else {
+                        $("#accuracy").css({'background':'#c00','color':'#FFF'});  
+                    }
                 }
                 else {
                     //geo.html('Paused');
@@ -70,6 +76,7 @@ $("#play").live('click', function(){
             },
             // Error
             function(error){
+                $("#accuracy").css('background','#c00');  
                 console.log('code: '    + error.code    + '\n' +
                       'message: ' + error.message + '\n');
                 alert('Error with GPS');
