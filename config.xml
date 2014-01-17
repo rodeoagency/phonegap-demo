@@ -16,5 +16,4 @@
     <content src="index.html" />
     <icon src="icon.png" />
     <gap:splash src="splash.png" />
-    
 </widget>
